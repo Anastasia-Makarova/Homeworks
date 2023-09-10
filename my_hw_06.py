@@ -124,27 +124,29 @@ def main() -> str:
 
 
 def move_file(file:Path, category:str, root_dir:Path) -> None:
-    target_dir = root_dir.joinpath(category)
-    if not target_dir.exists():
-        target_dir.mkdir()
-    new_path = target_dir.joinpath(file.name)
-    if not new_path.exists():
-            file.replace(new_path)
+        target_dir = root_dir.joinpath(category)
+        if not target_dir.exists():
+            target_dir.mkdir()
+        new_path = target_dir.joinpath(file.name)
+        if not new_path.exists():
+                file.replace(new_path)
 
 
 def normalize(path:Path):
-    for element in path.glob("**/*"):
-        if element.is_file():
-            name = str(element.name)
-            name = name.translate(map)
-            normalized_name = ""
-            for letter in name:
-                if ord(letter) <= 31 or 33 <=ord(letter) <=44 or ord(letter) == 47 or 59 <= ord(letter) <= 64 or ord(letter) >= 123:
-                    normalized_name += "_"
-                else:
-                    normalized_name += letter
-            element.rename(path.joinpath(normalized_name))
-
+    try:
+        for element in path.glob("**/*"):
+            if element.is_file():
+                name = str(element.name)
+                name = name.translate(map)
+                normalized_name = ""
+                for letter in name:
+                    if ord(letter) <= 31 or 33 <=ord(letter) <=44 or ord(letter) == 47 or 59 <= ord(letter) <= 64 or ord(letter) >= 123:
+                        normalized_name += "_"
+                    else:
+                        normalized_name += letter
+                element.rename(path.joinpath(normalized_name))
+    except FileExistsError:
+        os.remove(element)
 
 def remove_empty_folder(path:Path):
 
