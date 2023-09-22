@@ -128,8 +128,8 @@ def move_file(file:Path, category:str, root_dir:Path) -> None:
         if not target_dir.exists():
             target_dir.mkdir()
         new_path = target_dir.joinpath(file.name)
-        if not new_path.exists():
-                file.replace(new_path)
+        # if not new_path.exists():
+        file.replace(new_path)
 
 
 def normalize(path:Path):
