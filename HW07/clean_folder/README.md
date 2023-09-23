@@ -2,7 +2,7 @@
 Clean Folder
 File sorter for a folder. Moves user files ii the given folder to separate folders due to the type of file.
 
-version 0.1.0
+version 0.1.1
 
 Project is OS independent.
 
@@ -11,8 +11,6 @@ __________________________
 ENTRY POINT name: clean-folder (path to the folder for sorting needed to be given after the space)
 __________________________
 
-----BUGS----
-Folder to sort should be on any external drive
 
 
 Known file extentions:

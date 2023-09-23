@@ -128,7 +128,6 @@ def move_file(file:Path, category:str, root_dir:Path) -> None:
         if not target_dir.exists():
             target_dir.mkdir()
         new_path = target_dir.joinpath(file.name)
-        # if not new_path.exists():
         file.replace(new_path)
 
 
@@ -149,17 +148,14 @@ def normalize(path:Path):
         os.remove(element)
 
 def remove_empty_folder(path:Path):
+    
+    list_of_folders_to_del = list(path.glob("**"))[::-1]
 
-    for element in path.glob("*"):
-        size = 0
-        if element.is_dir():
-            for sub_element in element.glob("**/*"):
-                size += os.path.getsize(sub_element) 
-        if element.is_file():
-            size = os.path.getsize(element)
-
-        if size == 0:
-            shutil.rmtree(element)
+    for element in list_of_folders_to_del:
+        try:
+            element.rmdir()
+        except OSError:
+            continue
 
 
 def report(path: Path):

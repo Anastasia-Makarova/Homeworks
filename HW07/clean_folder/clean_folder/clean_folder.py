@@ -11,7 +11,6 @@ CATEGORIES = {"Audio": [".mp3", ".wav", ".flac", ".wma", ".ogg", ".amr"],
               "Video": [".mp4", ".mpeg", ".avi", ".mov", ".mkv"],
               "Archives": [".zip", ".gz", ".tar"]}
 
-
 map = {ord("А"): "A", 
        ord("Б"): "B", 
        ord("В"): "V", 
@@ -82,21 +81,24 @@ def get_categories(file:Path) -> str:
         if ext in exts:
             return cat
     return "Other"
-
+    
 
 def extention_list(path):
     known_extentions = set()
     found_extentions = set()
        
+
     for lst in CATEGORIES.values():
         for ext in lst:
             known_extentions.add(ext)
+
     for element in path.glob("**/*"):
         if element.is_file():
             found_extentions.add(element.suffix.lower())
     
     sorted_extentions = found_extentions&known_extentions
     unknown_extentions = found_extentions^sorted_extentions
+
     print("\nExtentions sorted:\n", str(sorted_extentions))
     print("\nUnknown extentions:\n", str(unknown_extentions))
 
@@ -106,6 +108,7 @@ def main() -> str:
         path = Path(sys.argv[1])
     except IndexError:
         return "No path to folder"
+
     if not path.exists():
         return "Folder does not exist. Try another path."
     
@@ -125,8 +128,7 @@ def move_file(file:Path, category:str, root_dir:Path) -> None:
         if not target_dir.exists():
             target_dir.mkdir()
         new_path = target_dir.joinpath(file.name)
-        if not new_path.exists():
-                file.replace(new_path)
+        file.replace(new_path)
 
 
 def normalize(path:Path):
@@ -145,19 +147,15 @@ def normalize(path:Path):
     except FileExistsError:
         os.remove(element)
 
-
 def remove_empty_folder(path:Path):
+    
+    list_of_folders_to_del = list(path.glob("**"))[::-1]
 
-    for element in path.glob("*"):
-        size = 0
-        if element.is_dir():
-            for sub_element in element.glob("**/*"):
-                size += os.path.getsize(sub_element) 
-        if element.is_file():
-            size = os.path.getsize(element)
-
-        if size == 0:
-            shutil.rmtree(element)
+    for element in list_of_folders_to_del:
+        try:
+            element.rmdir()
+        except OSError:
+            continue
 
 
 def report(path: Path):
@@ -186,8 +184,6 @@ def unpack(path:Path) -> None:
                     zip_ref.extractall(path.joinpath("Archives").joinpath(element.stem))
 
 
-
 if __name__  == "__main__":
     # main()
     print(main())
-

@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name="clean_folder",
-      version="0.1.0",
+      version="0.1.1",
       description="File sorter for a folder",
       author="Stacy",
       author_email="nastasia.makarova@gmail.com",
